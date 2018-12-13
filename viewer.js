@@ -465,21 +465,23 @@ function drawWarrior (i, j, f, w) {
   context.fill();
   context.stroke();
 
-  context.beginPath();
-  context.font = 'bold 12px Sans-serif';
-  context.strokeStyle = 'black';
-  context.lineWidth = 0.7;
-  if (showFood) {
-    context.fillText(f, j*tileSize + offset + 1.4*size, i*tileSize + offset - 0.4*size);
-    context.strokeText(f, j*tileSize + offset + 1.4*size, i*tileSize + offset - 0.4*size);
+  if (showFood || showWater) {
+    context.beginPath();
+    context.font = 'bold 12px Sans-serif';
+    context.strokeStyle = 'black';
+    context.lineWidth = 0.7;
+    if (showFood) {
+      context.fillText(f, j*tileSize + offset + 1.4*size, i*tileSize + offset - 0.4*size);
+      context.strokeText(f, j*tileSize + offset + 1.4*size, i*tileSize + offset - 0.4*size);
+    }
+    if (showWater) {
+      context.fillText(w, j*tileSize + offset + 1.4*size, i*tileSize - offset - 0.4*size);
+      context.strokeText(w, j*tileSize + offset + 1.4*size, i*tileSize - offset - 0.4*size);
+    }
+    context.fill();
+    context.stroke();
+    context.lineWidth = unitLineWidth;
   }
-  if (showWater) {
-    context.fillText(w, j*tileSize + offset + 1.4*size, i*tileSize - offset - 0.4*size);
-    context.strokeText(w, j*tileSize + offset + 1.4*size, i*tileSize - offset - 0.4*size);
-  }
-  context.fill();
-  context.stroke();
-  context.lineWidth = unitLineWidth;
 
 }
 
