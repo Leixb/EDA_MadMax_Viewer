@@ -1,123 +1,134 @@
 <html>
 
 
-<head>
+    <head>
 
-  <title>Mad Max</title>
+        <title>Mad Max</title>
 
-  <style>
+        <style>
 
-    body {
-      font-family: sans-serif;
-      font-size: 12pt;
-      background-color: black;
-      color: white;
-      width: 100%;
-      height: 100%;
-      margin: 0px;
-      overflow: hidden;
-    }
+            body {
+                font-family: sans-serif;
+                font-size: 12pt;
+                background-color: black;
+                color: white;
+                width: 100%;
+                height: 100%;
+                margin: 0px;
+                overflow: hidden;
+            }
 
-    .score {
-      min-width: 100px;
-      margin-right: 25px;
-      display: inline-block;
-      text-align: left;
-      font-size: 11pt;
-    }
+            .score {
+                min-width: 100px;
+                margin-right: 25px;
+                display: inline-block;
+                text-align: left;
+                font-size: 11pt;
+            }
 
-    .total {
-      min-width: 100px;
-      margin-right: 25px;
-      display: inline-block;
-      text-align: left;
-      font-size: 11pt;
-    }
+            .total {
+                min-width: 100px;
+                margin-right: 25px;
+                display: inline-block;
+                text-align: left;
+                font-size: 11pt;
+            }
 
-    .button {
-      cursor: pointer;
-    }
+            .button {
+                cursor: pointer;
+            }
 
-  </style>
+        </style>
 
-  <link type='text/css' href='css/ui-lightness/jquery-ui-1.8.18.custom.css' rel='Stylesheet' />
+        <link type='text/css' href='css/ui-lightness/jquery-ui-1.8.18.custom.css' rel='Stylesheet' />
 
-  <script type='text/javascript' src='js/jquery-1.7.1.min.js'></script>
+        <script type='text/javascript' src='js/jquery-1.7.1.min.js'></script>
 
-  <script type='text/javascript' src='js/jquery-ui-1.8.18.custom.min.js'></script>
+        <script type='text/javascript' src='js/jquery-ui-1.8.18.custom.min.js'></script>
 
-  <script type='text/javascript' src='./viewer.js' ></script>
+        <script type='text/javascript' src='./js/plotly-latest.min.js'></script>
 
-</head>
+        <script type='text/javascript' src='./viewer.js' ></script>
 
-<body onload="init()">
+    </head>
 
-  <div id="scores" style="position:fixed; top:150; left:10; width:140px;"></div>
+    <body onload="init()">
 
-  <div id="totals" style="position:fixed; top:150; right:0; width:140px;"></div>
+        <div id="scores" style="position:fixed; top:150; left:10; width:140px;"></div>
 
-  <center id="inputdiv" style="display:none;">
+        <div id="totals" style="position:fixed; top:150; right:0; width:140px;"></div>
 
-  <!--
-  TODO: Change logo.
-    <img src="img/logo.png" style="with:200px; height: 200px; margin:40px;"/>
-  -->
-    <br/>
-    <br/>
+        <center id="inputdiv" style="display:none;">
 
-    <div style="margin-bottom: 20px;">
-      Select a game file to load:
-    </div>
-    <input type="file" id="file" name="file" />
+            <!--
+                TODO: Change logo.
+                <img src="img/logo.png" style="with:200px; height: 200px; margin:40px;"/>
+            -->
+            <br/>
+            <br/>
 
-  </center>
+            <div style="margin-bottom: 20px;">
+                Select a game file to load:
+            </div>
+            <input type="file" id="file" name="file" />
 
-  <center id='loadingdiv' style="display:none; margin-top:200px;">
-    <p>
-      Please wait, loading game.
-    </p>
-  </center>
+        </center>
 
-  <center id="gamediv" style="display:none;">
+        <center id='loadingdiv' style="display:none; margin-top:200px;">
+            <p>
+                Please wait, loading game.
+            </p>
+        </center>
 
-    <br/>
-    <br/>
+        <center id="gamediv" style="display:none;">
 
-    <div style='width:600px; height:32px;'>
-      <div style='float:left;'>
-        <img id='but_play' class='button' title="Play (space)" src='img/but_play.png' height='32' width='32' onclick='playButton();' />
-        <img id='but_pause' class='button' title="Pause (space)" src='img/but_pause.png' height='32' width='32' onclick='pauseButton();'/>
-        <img id='but_start' class='button' title="Go to start (start)" src='img/but_start.png' height='32' width='32' onclick='startButton();' />
-        <img id='but_end' class='button' title="Go to end (end)" src='img/but_end.png' height='32' width='32' onclick='endButton();' />
-        <img id='but_anim' class='button' title="Toggle animation" src='img/but_refresh.png' height='32' width='32' onclick='animButton();' />
-        <img id='but_fuel' class='button' title="Toggle Fuel" src='img/but_fuel.png' height='32' width='32' onclick='toggleFuel();' />
-        <img id='but_water' class='button' title="Toggle Water" src='img/but_water.png' height='32' width='32' onclick='toggleWater();' />
-        <img id='but_food' class='button' title="Toggle Food" src='img/but_food.png' height='32' width='32' onclick='toggleFood();' />
-      </div>
+            <br/>
+            <br/>
 
-      <span id='round' style="position:relative; top: 10px;"> </span>
+            <div style='width:600px; height:32px;'>
+                <div style='float:left;'>
+                    <img id='but_play' class='button' title="Play (space)" src='img/but_play.png' height='32' width='32' onclick='playButton();' />
+                    <img id='but_pause' class='button' title="Pause (space)" src='img/but_pause.png' height='32' width='32' onclick='pauseButton();'/>
+                    <img id='but_start' class='button' title="Go to start (start)" src='img/but_start.png' height='32' width='32' onclick='startButton();' />
+                    <img id='but_end' class='button' title="Go to end (end)" src='img/but_end.png' height='32' width='32' onclick='endButton();' />
+                    <img id='but_anim' class='button' title="Toggle animation" src='img/but_refresh.png' height='32' width='32' onclick='animButton();' />
+                    <img id='but_fuel' class='button' title="Toggle Fuel" src='img/but_fuel.png' height='32' width='32' onclick='toggleFuel();' />
+                    <img id='but_water' class='button' title="Toggle Water" src='img/but_water.png' height='32' width='32' onclick='toggleWater();' />
+                    <img id='but_food' class='button' title="Toggle Food" src='img/but_food.png' height='32' width='32' onclick='toggleFood();' />
+                </div>
 
-      <img style='float:right;' class='button' id='but_anim' title="Close window" src='img/but_close.svg' height='32' width='32' onclick='closeButton();' />
-    </div>
+                <span id='round' style="position:relative; top: 10px;"> </span>
 
-    <br/>
+                <img style='float:right;' class='button' id='but_anim' title="Close window" src='img/but_close.svg' height='32' width='32' onclick='closeButton();' />
+            </div>
 
-    <div id='slider'> </div>
+            <br/>
 
-    <br/>
+            <div id='slider'> </div>
 
-    <canvas id='myCanvas'>
-        <p>Your browser does not support the HTML canvas element. Please use a newer browser.</p>
-    </canvas>
+            <br/>
 
-  <!--
-  <p>
-    Press H for help.
-  </p>
-  -->
+            <canvas id='myCanvas'>
+                <p>Your browser does not support the HTML canvas element. Please use a newer browser.</p>
+            </canvas>
 
-  </center>
+            <p>
+                Press G to view graphs
+            </p>
 
-</body>
+        </center>
+
+        <center id="graphdiv" style="display:none;">
+            <div id="score_plot" style="display:inline;float:left;">
+            </div>
+            <div id="city_plot" style="display:inline;float:left;">
+            </div>
+            <div id="warrior_plot" style="display:inline;float:left;">
+            </div>
+            <div id="cpu_plot" style="display:inline;float:left;">
+            </div>
+        </center>
+
+    </body>
 
 </html>

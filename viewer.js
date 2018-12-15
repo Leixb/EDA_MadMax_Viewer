@@ -274,7 +274,103 @@ function initGame (raw_data) {
   document.getElementById("loadingdiv").style.display = "none";
   document.getElementById("gamediv").style.display = "";
 
+  plotScore();
+
   mainloop();
+}
+
+function plotScore() {
+  var score_data = new Array();
+  var warrior_data = new Array();
+  var city_data = new Array();
+  var cpu_data = new Array();
+  var x = new Array();
+
+  for (var round = 0; round <= data.nb_rounds; ++round) x.push(round);
+
+  for (var i = 0; i < data.nb_players; ++i) {
+    var score = new Array();
+    var cities = new Array();
+    var warriors = new Array();
+    var cpu = new Array();
+    for (var round = 0; round <= data.nb_rounds; ++round) {
+      score.push(
+        data.rounds[round].total_score[i]
+      );
+      warriors.push(
+        data.rounds[round].alive_warriors[i]
+      );
+      cities.push(
+        data.rounds[round].num_cities[i]
+      );
+      cpu.push(
+        data.rounds[round].cpu[i]
+      );
+    }
+    score_data.push(
+      {
+        x:x,
+        y:score,
+        type: 'scatter',
+        name: data.names[i],
+        marker: {
+          color: player_colors[i],
+        }
+      }
+    );
+    warrior_data.push(
+      {
+        x:x,
+        y:warriors,
+        xaxis:'x',
+        yaxis:'y1',
+        type: 'scatter',
+        name: data.names[i],
+        marker: {
+          color: player_colors[i],
+        }
+      }
+    );
+    city_data.push(
+      {
+        x:x,
+        y:cities,
+        xaxis:'x',
+        yaxis:'y2',
+        type: 'bar',
+        name: data.names[i],
+        marker: {
+          color: player_colors[i],
+        }
+      }
+    );
+    cpu_data.push(
+      {
+        x:x,
+        y:cpu,
+        xaxis:'x',
+        yaxis:'y2',
+        type: 'scatter',
+        name: data.names[i],
+        marker: {
+          color: player_colors[i],
+        }
+      }
+    );
+  }
+
+  Plotly.newPlot('score_plot', score_data,
+    {title:'Score', responsive: true, }
+  );
+  Plotly.newPlot('city_plot', city_data,
+    {title:'Cities', barmode: 'stack', bargap:0, responsive: true, }
+  );
+  Plotly.newPlot('warrior_plot', warrior_data,
+    {title:'Warriors', responsive:true, }
+  );
+  Plotly.newPlot('cpu_plot', cpu_data,
+    {title:'cpu', responsive:true, }
+  );
 }
 
 
@@ -541,6 +637,15 @@ function closeButton () {
   window.close();
 }
 
+function displayGraph() {
+  document.getElementById("gamediv").style.display = "none";
+  document.getElementById("graphdiv").style.display = "";
+}
+
+function displayGame() {
+  document.getElementById("gamediv").style.display = "";
+  document.getElementById("graphdiv").style.display = "none";
+}
 
 // *********************************************************************
 // Keyboard and Mouse events
@@ -602,8 +707,16 @@ function onDocumentKeyUp (event) {
       else pauseButton();
       break;
 
+    case 66: // "B"
+      displayGame();
+      break;
+
     case 72: // "h"
       help();
+      break;
+    case 71: // "g"
+      pauseButton();
+      displayGraph();
       break;
 
     default:
@@ -637,7 +750,6 @@ function help () {
   if (window.focus) win.focus();
   return false;
 }
-
 
 // *********************************************************************
 // This function is called periodically.
